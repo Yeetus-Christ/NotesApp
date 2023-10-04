@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ycKQJd38rCF11uWbveJra80NxDaRHXOTBSaMLy5RQJYKC+XoDxJVzgCrNUoIJRqOYBgxWg09BrriMqjBTbVKHg==",
+  "dgSpecHash": "znVMYeEDjWZEopbiDWqk3/6PAtBgErI3FGdrihGrORwukQk0pQXzU4gXqmS9vnNAzJ4Qd98tjW/+XMlV9XuFkw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Yeetus Christ\\source\\repos\\NotesApp\\NotesApp\\NotesApp.csproj",
+  "projectFilePath": "C:\\Users\\Yeetus Christ\\Desktop\\NotesApp\\NotesApp\\NotesApp\\NotesApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Yeetus Christ\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\Yeetus Christ\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

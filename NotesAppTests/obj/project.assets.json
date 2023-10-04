@@ -8971,11 +8971,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Yeetus Christ\\source\\repos\\NotesApp\\NotesAppTests\\NotesAppTests.csproj",
+      "projectUniqueName": "C:\\Users\\Yeetus Christ\\Desktop\\NotesApp\\NotesApp\\NotesAppTests\\NotesAppTests.csproj",
       "projectName": "NotesAppTests",
-      "projectPath": "C:\\Users\\Yeetus Christ\\source\\repos\\NotesApp\\NotesAppTests\\NotesAppTests.csproj",
+      "projectPath": "C:\\Users\\Yeetus Christ\\Desktop\\NotesApp\\NotesApp\\NotesAppTests\\NotesAppTests.csproj",
       "packagesPath": "C:\\Users\\Yeetus Christ\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Yeetus Christ\\source\\repos\\NotesApp\\NotesAppTests\\obj\\",
+      "outputPath": "C:\\Users\\Yeetus Christ\\Desktop\\NotesApp\\NotesApp\\NotesAppTests\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -8997,8 +8997,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\Yeetus Christ\\source\\repos\\NotesApp\\NotesApp\\NotesApp.csproj": {
-              "projectPath": "C:\\Users\\Yeetus Christ\\source\\repos\\NotesApp\\NotesApp\\NotesApp.csproj"
+            "C:\\Users\\Yeetus Christ\\Desktop\\NotesApp\\NotesApp\\NotesApp\\NotesApp.csproj": {
+              "projectPath": "C:\\Users\\Yeetus Christ\\Desktop\\NotesApp\\NotesApp\\NotesApp\\NotesApp.csproj"
             }
           }
         }

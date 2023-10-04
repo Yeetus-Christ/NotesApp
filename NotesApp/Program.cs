@@ -9,6 +9,8 @@ using Serilog.Sinks.Elasticsearch;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+//Adding Serilog to write logs to ElasticSearch cluster
 builder.Host.UseSerilog((hostBuilder, loggerConfiguration) =>
 {
     var elasticsearchSettings = hostBuilder.Configuration.GetSection(nameof(ElasticsearchSettings)).Get<ElasticsearchSettings>();
@@ -33,9 +35,14 @@ builder.Host.UseSerilog((hostBuilder, loggerConfiguration) =>
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+
+//Configuring DbContext to use PostgreSQL database
 builder.Services.AddDbContext<AppDbContext>(options =>
 options.UseNpgsql(builder.Configuration.GetConnectionString("NotesApp")));
+
 builder.Services.AddScoped<AppDbContext>();
+
+//Injecting service for pages to work with DbContext
 builder.Services.AddScoped<INotesService, NotesService>();
 
 var app = builder.Build();

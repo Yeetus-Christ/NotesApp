@@ -15,6 +15,7 @@ namespace NotesApp.Data
 
         }
 
+
         public virtual DbSet<Note> Notes { get; set; }
     }
 }
