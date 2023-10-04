@@ -1,0 +1,159 @@
+﻿@page "/"
+
+<PageTitle>Index</PageTitle>
+
+@using NotesApp.Data
+@using NotesApp.Models
+@inject INotesService notesService
+
+<!--Header-->
+  <div class="row align-items-center">
+      <div class="col">
+          <button class="btn btn-primary" @onclick="e => showAddNote = true">New note</button>
+      </div>
+      
+      <div class="col">
+        <form class="d-flex" role="search">
+            <input class="form-control me-2" type="text" placeholder="Search" value="@searchString" @oninput="(EventArgs) => searchString = EventArgs.Value.ToString()">
+            <button class="btn btn-outline-success" @onclick="GetNotesByNameOrContent" type="button">Search</button>
+        </form>
+      </div>
+
+      <div class="col text-end" style="margin-right: 50px">
+        <div>Total notes: @allNotes.Count()</div>
+      </div>
+
+  </div>
+
+<!--Notes-->
+@foreach (var note in notes.Select((value, i) => new { i, value }))
+{
+    <div class="grid-item card text-dark mt-5" style="background-color: #e5ecf26e;">
+        <div class="row align-items-center">
+            <div class="col" style="margin-left: 50px; margin-top: 20px; margin-bottom: 20px">@note.value.Title</div>
+            <div class="col text-center" style="margin-top: 20px; margin-bottom: 20px">@Created(@note.value.CreatedDate)</div>
+            <div class="col text-end" style="margin-right: 50px">
+                <button class="btn btn-primary" @onclick="e => this.collapsed[note.i] = !this.collapsed[note.i]">@( this.collapsed[@note.i] ? "Hide note" : "View note")</button>
+                <button class="btn btn-primary" @onclick="e => {showEditNote = true; currentNote = this.notes.ElementAt(note.i); inputContent = currentNote.Content;}">Edit note</button>
+            </div>
+        </div>
+
+        <div class="row @( !this.collapsed[@note.i] ? "collapse": "")">
+            <div class="card card-body" style="margin-left: 50px; margin-right: 50px; margin-bottom: 20px">
+                @note.value.Content
+            </div>
+        </div>
+    </div>
+}
+
+<!--Form for adding notes-->
+@if (showAddNote)
+{
+    <form>
+        <div class="addToBg">
+
+        </div>
+        <div class="grid-item card text-dark  mt-5 addTo" style="opacity: 1.0;">
+            <span @onclick="e => showAddNote = false" style="margin-left:450px; font-size: 24px; margin-top: 10px" class="close">&times;</span>
+
+            <h6 style="font-size: 20px; margin-top:-10px; margin-left: 40px">Title:</h6>
+            <input style="width: 90%; margin-left: 25px" placeholder="Title" class="form-control" type="text" @oninput="(EventArgs) => inputTitle = EventArgs.Value.ToString()"/>
+
+            <h6 style="font-size: 20px; margin-top: 20px; margin-left: 40px">Content:</h6>
+            <textarea style="width: 90%; margin-left: 25px" placeholder="Content" class="form-control overflow-auto" type="text" rows="5" @oninput="(EventArgs) => inputContent = EventArgs.Value.ToString()"/>
+
+            <div class="row" style="--bs-gutter-x: 0; margin-top: 20px; justify-content: right; margin-right: 40px">
+                <button @onclick="@AddNote" type="button" class="btn btn-primary" style="width: 100px;">Add</button>
+            </div>
+
+        </div>
+    </form>
+}
+
+<!--Form for editing notes-->
+@if (showEditNote)
+{
+    <form>
+        <div class="addToBg">
+
+        </div>
+        <div class="grid-item card text-dark  mt-5 addTo" style="opacity: 1.0; height: 340px">
+            <span @onclick="e => showEditNote = false" style="margin-left:450px; font-size: 24px; margin-top: 10px" class="close">&times;</span>
+
+            <h6 style="font-size: 20px; margin-top:-10px; margin-left: 40px">@currentNote.Title</h6>
+
+            <h6 style="font-size: 20px; margin-top: 20px; margin-left: 40px">Content:</h6>
+            <textarea style="width: 90%; margin-left: 25px" class="form-control overflow-auto" type="text" rows="5" @oninput="(EventArgs) => inputContent = EventArgs.Value.ToString()">@currentNote.Content</textarea>
+
+            <div class="row" style="--bs-gutter-x: 0; margin-top: 20px; justify-content: right; margin-right: 40px">
+                <button @onclick="@EditNote" type="button" class="btn btn-primary" style="width: 100px;">Edit</button>
+            </div>
+
+        </div>
+    </form>
+}
+
+@code {
+    private List<Note>? allNotes;
+    private List<Note>? notes;
+    private Note currentNote;
+
+    private bool[] collapsed;
+    private bool showAddNote = false;
+    private bool showEditNote = false;
+
+    private string searchString = String.Empty;
+    private string inputTitle = String.Empty;
+    private string inputContent = String.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        allNotes = await notesService.GetAllNotes();
+        collapsed = new bool[allNotes.Count()];
+        notes = allNotes.OrderBy(x => x.CreatedDate).ToList();
+    }
+
+    private string Created(DateTime createdDate)
+    {
+        TimeSpan ts = DateTime.Now.ToUniversalTime() - createdDate;
+
+        if (ts.Hours == 0 && ts.Days == 0)
+        {
+            return "Created recently";
+        }
+        else if (ts.Hours > 0 && ts.Days == 0)
+        {
+            return $"Created {(int)ts.TotalHours} hours ago";
+        }
+        else
+        {
+            return $"Created {(int)ts.TotalDays} days ago";
+        }
+    }
+
+    private void GetNotesByNameOrContent()
+    {
+        if (String.IsNullOrEmpty(searchString))
+        {
+            notes = allNotes;
+            return;
+        }
+
+        notes = allNotes.Select(x => x).Where(x => x.Content.Contains(searchString) || x.Title.Contains(searchString)).ToList();
+    }
+
+    private void AddNote()
+    {
+        notesService.CreateNote(new Note(){Title = inputTitle, Content = inputContent, CreatedDate = DateTime.Now.ToUniversalTime()});
+        inputTitle = String.Empty;
+        inputContent = String.Empty;
+        showAddNote = false;
+    }
+
+    private void EditNote()
+    {
+        notesService.UpdateNote(new Note() { Id = currentNote.Id, Title = currentNote.Title, Content = inputContent, CreatedDate = currentNote.CreatedDate});
+        inputContent = String.Empty;
+        showEditNote = false;
+    }
+}
